@@ -1,6 +1,5 @@
 // This contains all the game items/functions to be used
-var mainState = {
-        preload: function() {
+var mainState = {preload: function() {
 
         // all the images/spunds that will be used in the game
         game.load.image('player', 'assets/player1.png'); 
@@ -9,7 +8,10 @@ var mainState = {
 
         game.load.image('background', 'assets/background.png');
 
+        game.load.audio('vibe', 'asses/Arcade-Fantasy.mp3');
+
         game.load.audio('jump', 'assets/jump.wav');
+
     },
 
     /* ------------------------------------------------------------------------------------------------
@@ -20,30 +22,28 @@ var mainState = {
         // Set the background of the game to blue and add sound effects
         game.stage.background = background;
 
+        music = game.add.audio('vibe');
+
+        music.play();
+
         this.jumpSound = game.add.audio('jump'); 
-
-
 
         // Use Phaser physics
         game.physics.startSystem(Phaser.Physics.ARCADE);
-
 
         // Set player settings
         this.player = game.add.sprite(100, 245, 'player');
 
         game.physics.arcade.enable(this.player);
 
-        this.player.body.gravity.y = 1000;  
+        this.player.body.gravity.y = 800;  
 
-        this.player.anchor.setTo(-0.2, 0.5); 
+        this.player.anchor.setTo(-0.3, 0.6); 
 
-
-
-
-        // Call the 'jump' function when the spacekey is hit
-        var spaceKey = game.input.keyboard.addKey(
-                        Phaser.Keyboard.SPACEBAR);
-        spaceKey.onDown.add(this.jump, this);  
+        // Call the 'jump' function when the spaceBar is hit
+        var spaceBar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        
+        spaceBar.onDown.add(this.jump, this);  
 
         // Add obstacles
         this.Obstacles = game.add.group();    
@@ -51,10 +51,9 @@ var mainState = {
         this.timer = game.time.events.loop(1500, this.addRowOfObstacles, this);
 
 
-
         // Add score to screen
         this.score = 0;
-        this.labelScore = game.add.text(20, 20, "0", 
+        this.labelScore = game.add.text(25, 25, "0", 
             { font: "35px Geneva", fill: "#ffffff" });   
 
         this.score += 1;
